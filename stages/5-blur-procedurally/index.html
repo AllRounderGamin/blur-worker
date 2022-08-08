@@ -1,0 +1,23 @@
+<!doctype html>
+<title>Image Blur</title>
+<script type=module src="index.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<h1>Image Blur in background thread</h1>
+
+<p>This example takes an image and lets you apply a level of blur. It is a simple implementation of <a href="https://en.wikipedia.org/wiki/Box_blur">Box blur</a> in JavaScript – not the most performant way to do this task but a good example of tasks that can take some time and thus should be done in the background.
+</p>
+
+<p>
+  <button id="blur">Blur</button>
+  <button id="reset">Reset</button>
+  <input id=n type="range" min=3 max=51 step=2 value=3>
+  <span id="nValue">N</span>
+  <progress id="progress" max=100 value=0></progress>
+  <button id="cancel">Cancel</button>
+</p>
+
+<div id="imgContainer">
+  <img id="image" src="/images/photo1k.jpg">
+  <canvas id="canvas"></canvas>
+</div>

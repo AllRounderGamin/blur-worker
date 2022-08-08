@@ -1,0 +1,31 @@
+#nValue {
+  display: inline-block;
+  width: 4ch;
+}
+
+#imgContainer {
+  display: block;
+  position: relative;
+  max-width: 100%;
+}
+
+#imgContainer > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  border: dashed thin black;
+}
+
+#imgContainer > img {
+  border-color: red;
+  opacity: 0;
+}
+
+#imgContainer.hideCanvas img {
+  opacity: 1;
+}
+
+#imgContainer.hideCanvas canvas {
+  opacity: 0;
+}
