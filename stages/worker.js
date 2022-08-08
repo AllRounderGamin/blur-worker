@@ -3,9 +3,10 @@ import { blurImageData } from './blur.js';
 addEventListener('message', (e) => {
   const message = e.data;
 
-  const reportProgress = (fraction) => {
+  const reportProgress = (fraction, currentImage) => {
     const progressMessage = {
       type: 'progress',
+      current: currentImage,
       progress: fraction,
       id: message.id,
     };

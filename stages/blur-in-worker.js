@@ -12,18 +12,19 @@ let nextMessageId = 0;
 
 function handleMessage(e) {
   const { type, id } = e.data;
-  const { receiver, reportProgress } = responseReceivers.get(id);
+  const { receiver, showBlurProgress, reportProgress } = responseReceivers.get(id);
 
   if (type === 'done') {
     console.log('finished job', id);
     receiver(e.data.result);
     responseReceivers.delete(id);
   } else if (type === 'progress' && reportProgress) {
+    showBlurProgress(e.data.current);
     reportProgress(e.data.progress);
   }
 }
 
-export function blurImageData(imageData, n = 3, reportProgress) {
+export function blurImageData(imageData, n = 3, reportProgress, showBlurProgress) {
   const message = {
     imageData,
     n,
@@ -35,11 +36,11 @@ export function blurImageData(imageData, n = 3, reportProgress) {
   worker.postMessage(message);
 
   return new Promise((resolve, reject) => {
-    responseReceivers.set(message.id, { receiver: resolve, reject, reportProgress });
+    responseReceivers.set(message.id, { receiver: resolve, reject, reportProgress, showBlurProgress });
   });
 }
 
-export function cancelBlur() {
+export function terminateWorker() {
   // stop ongoing work
   worker.terminate();
 

@@ -1,7 +1,8 @@
-import { blurImageData, cancelBlur } from './blur-in-worker.js';
+import { blurImageData, terminateWorker } from './blur-in-worker.js';
 
 const el = {};
 let c;
+let current;
 
 function drawOriginalImageOnCanvas() {
   if (el.image) c.drawImage(el.image, 0, 0);
@@ -22,17 +23,25 @@ function reportProgress(fraction) {
   el.progress.textContent = `${Math.round(percent)}%`;
 }
 
+function showBlurProgress(currentImage) {
+  c.putImageData(currentImage, 0, 0);
+}
 
 async function doBlur() {
   try {
+    current = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
     const data = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
-    const result = await blurImageData(data, el.n.valueAsNumber, reportProgress);
+    const result = await blurImageData(data, el.n.valueAsNumber, reportProgress, showBlurProgress);
     c.putImageData(result, 0, 0);
   } catch (e) {
     reportProgress(0);
   }
 }
 
+function cancelBlur() {
+  terminateWorker();
+  c.putImageData(current, 0, 0);
+}
 
 function init() {
   // prepare el with all elements that have an ID

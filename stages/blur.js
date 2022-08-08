@@ -35,11 +35,10 @@ export function blurImageData(imageData, n = 3, reportProgress) {
       convolve(x, y, 2); // blue
       // not blurring transparency
     }
-    reportProgress(y / height);
+    reportProgress(y / height, new ImageData(outputData, width, height));
   }
-  reportProgress(1);
 
-  return new ImageData(outputData, width, height);
+  return reportProgress(1, new ImageData(outputData, width, height));
 }
 
 class RGBADataWrapper {
