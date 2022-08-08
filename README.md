@@ -24,6 +24,6 @@ In four stages, we show how to do background processing in Web applications, how
 - we clean up all pending jobs, too
   - this isn't necessary if we disable the blur button while blurring, but other scenarios can have multiple pending jobs
 
-## `5-blur-procedual` - show the blurring occurring over time ([see diff](https://github.com/portsoc/blur-worker/compare/stage-4-blur-progress..stage-5-blur-cancel))
+## `5-blur-procedual` - show the blurring occurring over time ([see diff](https://github.com/portsoc/blur-worker/compare/stage-4-blur-cancel..stage-5-blur-procedurally))
 - the worker now also reports the current image data after every blur operation
 - cancelling a blur will also restore the canvas to it's state before the blur was started
