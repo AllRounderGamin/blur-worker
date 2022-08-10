@@ -29,13 +29,14 @@ function showBlurProgress(currentImage) {
 
 async function doBlur() {
   try {
+    el.blur.disabled = true;
     current = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
-    const data = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
-    const result = await blurImageData(data, el.n.valueAsNumber, reportProgress, showBlurProgress);
+    const result = await blurImageData(current, el.n.valueAsNumber, reportProgress, showBlurProgress);
     c.putImageData(result, 0, 0);
   } catch (e) {
     reportProgress(0);
   }
+  el.blur.disabled = false;
 }
 
 function cancelBlur() {
