@@ -1,4 +1,5 @@
 let worker;
+const queuedJobs = [];
 
 createWorker();
 
@@ -18,22 +19,34 @@ function handleMessage(e) {
     console.log('finished job', id);
     receiver(e.data.result);
     responseReceivers.delete(id);
+    if (queuedJobs.length > 0) {
+      const message = queuedJobs.shift();
+      console.log('proceeding with job', message.id);
+      message.imageData = e.data.result;
+      worker.postMessage(message);
+    }
   } else if (type === 'progress' && reportProgress) {
     showBlurProgress(e.data.current);
     reportProgress(e.data.progress);
   }
 }
 
+
 export function blurImageData(imageData, n = 3, reportProgress, showBlurProgress) {
   const message = {
-    imageData,
+    imageData: imageData,
     n,
     id: nextMessageId,
   };
   nextMessageId += 1;
 
-  console.log('submitting job', message.id);
-  worker.postMessage(message);
+  if (responseReceivers.has(message.id - 1)) {
+    console.log('holding job', message.id);
+    queuedJobs.push(message);
+  } else {
+    console.log('submitting job', message.id);
+    worker.postMessage(message);
+  }
 
   return new Promise((resolve, reject) => {
     responseReceivers.set(message.id, { receiver: resolve, reject, reportProgress, showBlurProgress });

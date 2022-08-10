@@ -37,8 +37,10 @@ export function blurImageData(imageData, n = 3, reportProgress) {
     }
     reportProgress(y / height, new ImageData(outputData, width, height));
   }
+  const finalImage = new ImageData(outputData, width, height);
+  reportProgress(1, finalImage);
 
-  return reportProgress(1, new ImageData(outputData, width, height));
+  return finalImage;
 }
 
 class RGBADataWrapper {

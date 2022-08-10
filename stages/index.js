@@ -30,9 +30,10 @@ function showBlurProgress(currentImage) {
 async function doBlur() {
   try {
     current = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
-    const data = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
-    const result = await blurImageData(data, el.n.valueAsNumber, reportProgress, showBlurProgress);
-    c.putImageData(result, 0, 0);
+    const data = current;
+    await blurImageData(data, el.n.valueAsNumber, reportProgress, showBlurProgress);
+    current = c.getImageData(0, 0, c.canvas.width, c.canvas.height);
+    reportProgress(0);
   } catch (e) {
     reportProgress(0);
   }
