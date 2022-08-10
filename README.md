@@ -27,3 +27,7 @@ In four stages, we show how to do background processing in Web applications, how
 ## `5-blur-procedually` - show the blurring occurring over time ([see diff](https://github.com/AllRounderGamin/blur-worker/compare/stage-4-blur-cancel..stage-5-blur-procedurally))
 - the worker now also reports the current image data after every blur operation
 - cancelling a blur will also restore the canvas to it's state before the blur was started
+
+## `6-blur-consecutively` - allow queueing of multiple jobs ([see diff](https://github.com/AllRounderGamin/blur-worker/compare/stage-5-blur-cancel..stage-6-blur-procedurally))
+- can now queue up multiple jobs
+- blur-in-worker keeps array of jobs that were queued up and runs them in order when worker is free
